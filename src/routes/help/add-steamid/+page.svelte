@@ -7,13 +7,13 @@
 	let examplePath = format(STEAM_SCREENSHOTS_PATH_TEMPLATE, { steamId: '<STEAM_ID>', appId: '<APP_ID>' });
 </script>
 
-<div class="max-w-screen-lg w-full px-4 pt-8 pb-16 mx-auto">
+<div class="max-w-screen-md w-full px-4 pt-8 pb-16 mx-auto">
 		<a href="/" class={buttonVariants({})}>
 			<ArrowLeftIcon class="h-4 w-4" />
 			Back
 		</a>
 	</div>
-	<article class="grow max-w-screen-lg w-full px-4 mx-auto prose">
+	<article class="grow max-w-screen-md w-full px-4 mx-auto prose">
 		<h1>Add Your Steam ID</h1>
 		<h2>Steam ID</h2>
 		<p>
