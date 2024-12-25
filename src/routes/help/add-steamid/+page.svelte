@@ -1,5 +1,6 @@
 <script>
 	import { STEAM_SCREENSHOTS_PATH_TEMPLATE } from '$lib/constants';
+	import steamId from '$lib/assets/steam-id.png';
 	import format from 'string-template';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import { ArrowLeftIcon } from 'lucide-svelte';
@@ -13,7 +14,7 @@
 			Back
 		</a>
 	</div>
-	<article class="grow max-w-screen-md w-full px-4 mx-auto prose">
+	<article class="grow max-w-screen-md w-full px-4 mx-auto prose mb-32">
 		<h1>Add Your Steam ID</h1>
 		<h2>Steam ID</h2>
 		<p>
@@ -28,9 +29,11 @@
 		<h2>How to find your Steam ID</h2>
 		<p>
 			Open the Steam client and click on your name in the top right corner, which opens a dropdown.
-			From there, click on the menu item "Account details" which will open a new window.
-			Your Steam ID is displayed below the title "... Account" (see line prefixed with "Steam ID").
+			From there, click on the menu item <span class="font-medium">Account details</span> which will open a new window.
+			Your Steam ID is displayed at the top of the page as shown in the screenshot below.
 		</p>
+
+		<img src={steamId} alt="Steam ID" class="w-full" />
 
 		<p>
 			Copy the Steam ID and paste it into the settings dialog of this app.
