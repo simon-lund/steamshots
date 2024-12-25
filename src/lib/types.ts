@@ -13,3 +13,7 @@ export type TAppState = {
     isNewApp: boolean,
     steamId?: string,
 }
+
+export type TDialogState = {
+    showSettingsDialog: boolean,
+}
