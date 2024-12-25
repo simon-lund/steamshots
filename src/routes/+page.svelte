@@ -5,7 +5,11 @@
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
 	import { appsStore, appStateStore } from '$lib/stores';
 	import type { TApp } from '$lib/types';
+	import { Settings2Icon } from 'lucide-svelte';
+	import { dialogState} from '$lib/state';
+	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { APP_HEADER_URL_TEMPLATE, APP_PORTRAIT_URL_TEMPLATE, STEAM_SCREENSHOTS_PATH_TEMPLATE } from '$lib/constants';
+	import { Button } from '$lib/components/ui/button';
 
 	function handleReorder(state: DragDropState<TApp>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -53,8 +57,24 @@
     }
 </style>
 
+{#if !$appStateStore.steamId}
+	<div class="max-w-screen-2xl w-full mx-auto px-4 pt-4">
+		<Alert.Root>
+			<Settings2Icon class="h-4 w-4" />
+			<Alert.Title>Add Your Steam ID</Alert.Title>
+			<Alert.Description class="space-y-2">
+				<p>
+					Please add your Steam ID so the app can generate the correct path to the screenshots folder of your Steam apps.
+					Your Steam ID is securely stored in your browser and is not shared with anyone.
+					<a href="/help/add-steamid" class="text-blue-500 hover:underline">Don't know your Steam ID?</a>
+				</p>
+				<Button onclick={() => dialogState.showSettingsDialog = true}>Add Steam ID</Button>
+			</Alert.Description>
+		</Alert.Root>
+	</div>
+{/if}
 
-<main class="grow px-4">
+<main class="grow max-w-screen-2xl w-full mx-auto px-4">
 	<div class="app-grid">
 		{#if $appsStore.length > 0}
 			<div class="trash-can" use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}>
