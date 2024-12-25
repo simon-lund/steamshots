@@ -22,7 +22,7 @@
 	function copyPath(app: TApp) {
 		let screenshotsPath = format(STEAM_SCREENSHOTS_PATH_TEMPLATE, {
 			steamId: $appStateStore.steamId || '<STEAM_ID>',
-			appId: app.id,
+			appId: app.id
 		});
 		navigator.clipboard.writeText(screenshotsPath);
 		toast.success(`Path for ${app.name} copied to clipboard`);
@@ -56,9 +56,11 @@
 
 <main class="grow px-4">
 	<div class="app-grid">
-		<div class="trash-can" use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}>
-			<Trash2Icon class="h-12 w-12" />
-		</div>
+		{#if $appsStore.length > 0}
+			<div class="trash-can" use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}>
+				<Trash2Icon class="h-12 w-12" />
+			</div>
+		{/if}
 		{#each $appsStore as app, index (app.id)}
 			{@const portraitUrl = format(APP_PORTRAIT_URL_TEMPLATE, { appId: app.id })}
 			{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: app.id })}
