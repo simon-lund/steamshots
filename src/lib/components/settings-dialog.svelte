@@ -11,21 +11,20 @@
 	import { appStateStore } from '../stores';
 	import { dialogState } from '$lib/state';
 
-	let open = $state(false);
 	let userId = $state($appStateStore.steamId || '');
-
-	$effect(() => {
-		open = dialogState.showSettingsDialog;
-	});
 
 	async function save(e) {
 		e.preventDefault();
 		$appStateStore.steamId = userId;
+		close();
+	}
+
+	function close() {
 		dialogState.showSettingsDialog = false;
 	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root bind:open={dialogState.showSettingsDialog}>
 	<Dialog.Trigger class={buttonVariants({ variant: "outline", size: "icon" })} title="Settings">
 		<Settings2Icon class="h-4 w-4" />
 	</Dialog.Trigger>
@@ -35,7 +34,7 @@
 			<Dialog.Description>
 				<p>
 					Please add your Steam ID.
-					<a href="/help/add-steamid" class="text-blue-500 hover:underline">Don't know your Steam ID?</a>
+					<a href="/help/add-steamid" class="text-blue-500 hover:underline" onclick={() => close()}>Don't know your Steam ID?</a>
 				</p>
 			</Dialog.Description>
 		</Dialog.Header>
