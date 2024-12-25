@@ -8,8 +8,12 @@
 	import logo from '$lib/assets/logo.png';
 	import githubMark from '$lib/assets/github-mark.png';
 
+	import { injectAnalytics } from '@vercel/analytics/sveltekit'
+	import { dev } from '$app/environment';
+
 	let { children } = $props();
 
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
 </script>
 
 <style>
