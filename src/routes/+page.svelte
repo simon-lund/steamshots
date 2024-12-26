@@ -10,6 +10,7 @@
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { APP_HEADER_URL_TEMPLATE, APP_PORTRAIT_URL_TEMPLATE, STEAM_SCREENSHOTS_PATH_TEMPLATE } from '$lib/constants';
 	import { Button } from '$lib/components/ui/button';
+	import { toSteamID3 } from '$lib/utils.js';
 
 	function handleReorder(state: DragDropState<TApp>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -25,7 +26,7 @@
 
 	function copyPath(app: TApp) {
 		let screenshotsPath = format(STEAM_SCREENSHOTS_PATH_TEMPLATE, {
-			steamId: $appStateStore.steamId || '<STEAM_ID>',
+			steamID3: $appStateStore.steamId ? toSteamID3($appStateStore.steamId) : '<STEAM_ID3>',
 			appId: app.id
 		});
 		navigator.clipboard.writeText(screenshotsPath);
