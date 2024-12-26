@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { Settings2Icon } from 'lucide-svelte';
-	import {
-		Button,
-		buttonVariants
-	} from '$lib/components/ui/button';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
@@ -25,7 +22,7 @@
 </script>
 
 <Dialog.Root bind:open={dialogState.showSettingsDialog}>
-	<Dialog.Trigger class={buttonVariants({ variant: "outline", size: "icon" })} title="Settings">
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })} title="Settings">
 		<Settings2Icon class="h-4 w-4" />
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[425px]">
@@ -34,7 +31,9 @@
 			<Dialog.Description>
 				<p>
 					Please add your Steam ID.
-					<a href="/help/add-steamid" class="text-blue-500 hover:underline" onclick={() => close()}>Don't know your Steam ID?</a>
+					<a href="/help/add-steamid" class="text-blue-500 hover:underline" onclick={() => close()}
+						>Don't know your Steam ID?</a
+					>
 				</p>
 			</Dialog.Description>
 		</Dialog.Header>

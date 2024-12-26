@@ -1,13 +1,11 @@
 {
-   "$docs": "https://www.fusejs.io/api/options.html",
-    "isCaseSensitive": false,
-    "includeScore": true,
-    "includeMatches": true,
-    "minMatchCharLength": 2,
-    "shouldSort": true,
-    "findAllMatches": false,
-    "threshold": 0.4,
-    "keys": [
-      "name"
-    ]
+	"$docs": "https://www.fusejs.io/api/options.html",
+	"isCaseSensitive": false,
+	"includeScore": true,
+	"includeMatches": true,
+	"minMatchCharLength": 2,
+	"shouldSort": true,
+	"findAllMatches": false,
+	"threshold": 0.4,
+	"keys": ["name"]
 }

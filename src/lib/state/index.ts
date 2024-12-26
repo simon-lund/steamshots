@@ -1,1 +1,1 @@
-export {dialogState} from '$lib/state/dialog-state.svelte';
+export { dialogState } from '$lib/state/dialog-state.svelte';

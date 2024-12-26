@@ -6,9 +6,13 @@
 	import { appsStore, appStateStore } from '$lib/stores';
 	import type { TApp } from '$lib/types';
 	import { Settings2Icon } from 'lucide-svelte';
-	import { dialogState} from '$lib/state';
+	import { dialogState } from '$lib/state';
 	import * as Alert from '$lib/components/ui/alert/index.js';
-	import { APP_HEADER_URL_TEMPLATE, APP_PORTRAIT_URL_TEMPLATE, STEAM_SCREENSHOTS_PATH_TEMPLATE } from '$lib/constants';
+	import {
+		APP_HEADER_URL_TEMPLATE,
+		APP_PORTRAIT_URL_TEMPLATE,
+		STEAM_SCREENSHOTS_PATH_TEMPLATE
+	} from '$lib/constants';
 	import { Button } from '$lib/components/ui/button';
 	import { toSteamID3 } from '$lib/utils.js';
 
@@ -34,51 +38,33 @@
 	}
 </script>
 
-<style>
-    .app-grid {
-        @apply grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 my-4;
-    }
-
-    button {
-        @apply h-full cursor-pointer relative rounded-sm shadow-md;
-    }
-
-    img {
-        @apply h-full aspect-portrait object-cover rounded-sm;
-        @apply transition-transform duration-200;
-    }
-
-    .placeholder {
-        @apply flex flex-col items-center justify-center h-full aspect-portrait rounded-sm bg-zinc-400;
-    }
-
-    .trash-can {
-        @apply flex h-full w-full bg-zinc-200 items-center justify-center;
-        @apply border-2 rounded-sm shadow-md text-red-500 border-red-400 ;
-    }
-</style>
-
 {#if !$appStateStore.steamId}
-	<div class="max-w-screen-2xl w-full mx-auto px-4 pt-4">
+	<div class="mx-auto w-full max-w-screen-2xl px-4 pt-4">
 		<Alert.Root>
 			<Settings2Icon class="h-4 w-4" />
 			<Alert.Title>Add Your Steam ID</Alert.Title>
 			<Alert.Description class="space-y-2">
 				<p>
-					Please add your Steam ID so the app can generate the correct path to the screenshots folder of your Steam apps.
-					Your Steam ID is securely stored in your browser and is not shared with anyone.
-					<a href="/help/add-steamid" class="text-blue-500 hover:underline">Don't know your Steam ID?</a>
+					Please add your Steam ID so the app can generate the correct path to the screenshots
+					folder of your Steam apps. Your Steam ID is securely stored in your browser and is not
+					shared with anyone.
+					<a href="/help/add-steamid" class="text-blue-500 hover:underline"
+						>Don't know your Steam ID?</a
+					>
 				</p>
-				<Button onclick={() => dialogState.showSettingsDialog = true}>Add Steam ID</Button>
+				<Button onclick={() => (dialogState.showSettingsDialog = true)}>Add Steam ID</Button>
 			</Alert.Description>
 		</Alert.Root>
 	</div>
 {/if}
 
-<main class="grow max-w-screen-2xl w-full mx-auto px-4">
+<main class="mx-auto w-full max-w-screen-2xl grow px-4">
 	<div class="app-grid">
 		{#if $appsStore.length > 0}
-			<div class="trash-can" use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}>
+			<div
+				class="trash-can"
+				use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}
+			>
 				<Trash2Icon class="h-12 w-12" />
 			</div>
 		{/if}
@@ -87,8 +73,8 @@
 			{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: app.id })}
 			<div use:droppable={{ container: index.toString(), callbacks: { onDrop: handleReorder } }}>
 				<button
-					use:draggable={{ container: index.toString(), dragData: app}}
-					class="h-full !cursor-pointer relative rounded-sm shadow-md"
+					use:draggable={{ container: index.toString(), dragData: app }}
+					class="relative h-full !cursor-pointer rounded-sm shadow-md"
 					onclick={() => copyPath(app)}
 					title={app.name}
 				>
@@ -110,3 +96,26 @@
 	</div>
 </main>
 
+<style>
+	.app-grid {
+		@apply my-4 grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
+	}
+
+	button {
+		@apply relative h-full cursor-pointer rounded-sm shadow-md;
+	}
+
+	img {
+		@apply aspect-portrait h-full rounded-sm object-cover;
+		@apply transition-transform duration-200;
+	}
+
+	.placeholder {
+		@apply flex aspect-portrait h-full flex-col items-center justify-center rounded-sm bg-zinc-400;
+	}
+
+	.trash-can {
+		@apply flex h-full w-full items-center justify-center bg-zinc-200;
+		@apply rounded-sm border-2 border-red-400 text-red-500 shadow-md;
+	}
+</style>

@@ -8,18 +8,18 @@
 ## 🛠️ Developing
 
 1. Clone the repository
-2. Install the dependencies with 
-    ```bash
-    pnpm install
-    ```
+2. Install the dependencies with
+   ```bash
+   pnpm install
+   ```
 3. Build the apps-index for the search bar
-    ```bash
-    pnpm run build:apps-index
-    ```
-4. Start the development server with 
-    ```bah
-    pnpm run dev
-    ```
+   ```bash
+   pnpm run build:apps-index
+   ```
+4. Start the development server with
+   ```bah
+   pnpm run dev
+   ```
 
 ## 🐛 Issues
 

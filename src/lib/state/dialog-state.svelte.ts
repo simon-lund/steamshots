@@ -1,5 +1,5 @@
-import type { TDialogState } from "$lib/types";
+import type { TDialogState } from '$lib/types';
 
 export const dialogState = $state<TDialogState>({
-		showSettingsDialog: false,
+	showSettingsDialog: false
 });

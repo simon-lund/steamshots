@@ -14,23 +14,17 @@
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 </script>
 
-<style>
-    header {
-        @apply flex justify-between items-center h-16 px-4 border-b;
-    }
-</style>
-
 <svelte:head>
 	<title>Steamshots</title>
 </svelte:head>
 
 <Toaster />
 
-<div class="min-h-screen flex flex-col">
+<div class="flex min-h-screen flex-col">
 	<header class="sticky top-0 z-10 bg-white">
 		<div class="flex items-center gap-2">
 			<img src={logo} alt="" class="h-10" />
-			<span class="font-bold text-lg">Steamshots</span>
+			<span class="text-lg font-bold">Steamshots</span>
 		</div>
 		<div class="flex items-center gap-2">
 			<Search />
@@ -38,7 +32,8 @@
 			<SettingsDialog />
 			<a
 				href="https://github.com/simon-lund/steamshots"
-				target="_blank" rel="noopener noreferrer"
+				target="_blank"
+				rel="noopener noreferrer"
 				title="GitHub repository"
 				class="ml-4"
 			>
@@ -53,3 +48,9 @@
 		<span class="text-sm text-muted-foreground">Click cover to copy path to clipboard.</span>
 	</footer>
 </div>
+
+<style>
+	header {
+		@apply flex h-16 items-center justify-between border-b px-4;
+	}
+</style>

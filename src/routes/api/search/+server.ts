@@ -5,11 +5,7 @@ import fuseOptions from '$lib/assets/fuse-options.json';
 import appsIndex from '$lib/assets/apps-index.json'; // Run scripts/build-index.js (pnpm build:apps-index) to generate the index file
 import appsFile from '$lib/assets/apps.json'; // and this file
 
-const fuse = new Fuse(
-	appsFile as never,
-	fuseOptions,
-	Fuse.parseIndex(appsIndex)
-);
+const fuse = new Fuse(appsFile as never, fuseOptions, Fuse.parseIndex(appsIndex));
 
 export function GET({ url }) {
 	const query = url.searchParams.get('q');
