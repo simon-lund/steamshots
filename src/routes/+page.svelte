@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ImageOffIcon, Trash2Icon } from 'lucide-svelte';
+	import { CopyIcon, ImageOffIcon, Trash2Icon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import format from 'string-template';
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
@@ -8,6 +8,7 @@
 	import { Settings2Icon } from 'lucide-svelte';
 	import { dialogState } from '$lib/state';
 	import * as Alert from '$lib/components/ui/alert/index.js';
+	import CopyToast from '$lib/components/copy-toast.svelte'
 	import {
 		APP_HEADER_URL_TEMPLATE,
 		APP_PORTRAIT_URL_TEMPLATE,
@@ -34,7 +35,7 @@
 			appId: app.id
 		});
 		navigator.clipboard.writeText(screenshotsPath);
-		toast.success(`Path for ${app.name} copied to clipboard`);
+		toast(CopyToast, { appName: app.name });
 	}
 </script>
 
