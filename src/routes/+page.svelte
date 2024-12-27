@@ -1,21 +1,18 @@
 <script lang="ts">
-	import { CopyIcon, ImageOffIcon, Trash2Icon } from 'lucide-svelte';
+	import { ImageOffIcon, LayoutGridIcon, Trash2Icon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import format from 'string-template';
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
-	import { appsStore, appStateStore } from '$lib/stores';
+	import { appsStore, settingsStore } from '$lib/stores';
 	import type { TApp } from '$lib/types';
-	import { Settings2Icon } from 'lucide-svelte';
-	import { dialogState } from '$lib/state';
-	import * as Alert from '$lib/components/ui/alert/index.js';
-	import CopyToast from '$lib/components/copy-toast.svelte'
+	import CopyToast from '$lib/components/copy-toast.svelte';
 	import {
 		APP_HEADER_URL_TEMPLATE,
 		APP_PORTRAIT_URL_TEMPLATE,
 		STEAM_SCREENSHOTS_PATH_TEMPLATE
 	} from '$lib/constants';
-	import { Button } from '$lib/components/ui/button';
 	import { toSteamID3 } from '$lib/utils.js';
+	import SteamIDAlert from '$lib/components/SteamIDAlert.svelte';
 
 	function handleReorder(state: DragDropState<TApp>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -30,93 +27,96 @@
 	}
 
 	function copyPath(app: TApp) {
+		let steamID3 = '<STEAM_ID3>';
+
+		if ($settingsStore.steamId) {
+			try {
+				steamID3 = toSteamID3($settingsStore.steamId);
+			} catch {
+				toast.error('Please check your Steam ID. It seems to be invalid.');
+				return;
+			}
+		}
+
 		let screenshotsPath = format(STEAM_SCREENSHOTS_PATH_TEMPLATE, {
-			steamID3: $appStateStore.steamId ? toSteamID3($appStateStore.steamId) : '<STEAM_ID3>',
+			steamID3,
 			appId: app.id
 		});
 		navigator.clipboard.writeText(screenshotsPath);
-		toast(CopyToast, { appName: app.name });
+		toast(CopyToast, { appName: app.name } as never);
 	}
 </script>
 
-{#if !$appStateStore.steamId}
-	<div class="mx-auto w-full max-w-screen-2xl px-4 pt-4">
-		<Alert.Root>
-			<Settings2Icon class="h-4 w-4" />
-			<Alert.Title>Add Your Steam ID</Alert.Title>
-			<Alert.Description class="space-y-2">
-				<p>
-					Please add your Steam ID so the app can generate the correct path to the screenshots
-					folder of your Steam apps. Your Steam ID is securely stored in your browser and is not
-					shared with anyone.
-					<a href="/help/add-steamid" class="text-blue-500 hover:underline"
-						>Don't know your Steam ID?</a
-					>
-				</p>
-				<Button onclick={() => (dialogState.showSettingsDialog = true)}>Add Steam ID</Button>
-			</Alert.Description>
-		</Alert.Root>
-	</div>
-{/if}
+<SteamIDAlert />
 
 <main class="mx-auto w-full max-w-screen-2xl grow px-4">
-	<div class="app-grid">
-		{#if $appsStore.length > 0}
+	{#if $appsStore.length === 0}
+		<div class="mt-24 flex items-center justify-center">
+			<div class="flex flex-col items-center gap-2 text-muted-foreground">
+				<LayoutGridIcon />
+				<p class="w-72 text-center">
+					You don't have any apps yet.<br />
+					Click plus or <kbd>Ctrl</kbd> + <kbd>J</kbd> to add apps.
+				</p>
+			</div>
+		</div>
+	{:else}
+		<div class="app-grid">
 			<div
 				class="trash-can"
 				use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}
 			>
 				<Trash2Icon class="h-12 w-12" />
 			</div>
-		{/if}
-		{#each $appsStore as app, index (app.id)}
-			{@const portraitUrl = format(APP_PORTRAIT_URL_TEMPLATE, { appId: app.id })}
-			{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: app.id })}
-			<div use:droppable={{ container: index.toString(), callbacks: { onDrop: handleReorder } }}>
-				<button
-					use:draggable={{ container: index.toString(), dragData: app }}
-					class="relative h-full !cursor-pointer rounded-sm shadow-md"
-					onclick={() => copyPath(app)}
-					title={app.name}
-				>
-					{#await fetch(portraitUrl) then _}
-						<img src={portraitUrl} alt={app.name} />
-					{:catch __}
-						{#await fetch(headerUrl) then _}
-							<img src={headerUrl} alt={app.name} />
+			{#each $appsStore as app, index (app.id)}
+				{@const portraitUrl = format(APP_PORTRAIT_URL_TEMPLATE, { appId: app.id })}
+				{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: app.id })}
+				<div use:droppable={{ container: index.toString(), callbacks: { onDrop: handleReorder } }}>
+					<button
+						use:draggable={{ container: index.toString(), dragData: app }}
+						class="relative h-full !cursor-pointer rounded-sm shadow-md"
+						onclick={() => copyPath(app)}
+						title={app.name}
+					>
+						{#await fetch(portraitUrl) then _}
+							<img src={portraitUrl} alt={app.name} />
 						{:catch __}
-							<div class="placeholder">
-								<ImageOffIcon class="rounded-sm text-zinc-800" />
-								<span>{app.name}</span>
-							</div>
+							{#await fetch(headerUrl) then _}
+								<img src={headerUrl} alt={app.name} />
+							{:catch __}
+								<div class="placeholder">
+									<ImageOffIcon class="rounded-sm text-zinc-800" />
+									<span>{app.name}</span>
+								</div>
+							{/await}
 						{/await}
-					{/await}
-				</button>
-			</div>
-		{/each}
-	</div>
+					</button>
+				</div>
+			{/each}
+		</div>
+	{/if}
 </main>
 
 <style>
-	.app-grid {
-		@apply my-4 grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
-	}
+    .app-grid {
+        @apply my-4 grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
+    }
 
-	button {
-		@apply relative h-full cursor-pointer rounded-sm shadow-md;
-	}
+    button {
+        @apply relative h-full cursor-pointer rounded-sm shadow-md;
+    }
 
-	img {
-		@apply aspect-portrait h-full rounded-sm object-cover;
-		@apply transition-transform duration-200;
-	}
+    img {
+        @apply aspect-portrait h-full rounded-sm object-cover;
+        @apply transition-transform duration-200;
+    }
 
-	.placeholder {
-		@apply flex aspect-portrait h-full flex-col items-center justify-center rounded-sm bg-zinc-400;
-	}
+    .placeholder {
+        @apply flex aspect-portrait h-full flex-col items-center justify-center rounded-sm bg-zinc-400;
+    }
 
-	.trash-can {
-		@apply flex h-full w-full items-center justify-center bg-zinc-200;
-		@apply rounded-sm border-2 border-red-400 text-red-500 shadow-md;
-	}
+    .trash-can {
+        @apply flex h-full w-full items-center justify-center bg-zinc-200;
+        @apply rounded-sm border-2 border-red-400 text-red-500 shadow-md;
+    }
 </style>
