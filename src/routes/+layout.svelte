@@ -26,7 +26,7 @@
 			<img src={logo} alt="" class="h-10" />
 			<span class="text-lg font-bold">Steamshots</span>
 		</div>
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-1">
 			<Search />
 			<HelpDialog />
 			<SettingsDialog />
@@ -45,7 +45,7 @@
 	{@render children()}
 
 	<footer class="flex justify-center px-4 py-2">
-		<span class="text-sm text-muted-foreground">Click cover to copy path to clipboard.</span>
+		<span class="text-sm text-muted-foreground">Click app cover to copy path to clipboard.</span>
 	</footer>
 </div>
 
