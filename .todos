@@ -4,3 +4,4 @@
 - [ ] Add analytics
 - [ ] Make warning removable
 - [ ] replace french-toast lib with a better one
+- [ ] rework drag&drop -> shouldnt be grid based, but like a list and items should be inserted based on position of mouse relative to item center
