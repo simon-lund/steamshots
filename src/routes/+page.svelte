@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ImageOffIcon, LayoutGridIcon, Trash2Icon } from 'lucide-svelte';
+	import { ImageOffIcon, LayoutGridIcon, LoaderIcon, Trash2Icon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import format from 'string-template';
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
@@ -90,7 +90,12 @@
 						onclick={() => copyPath(app)}
 						title={app.name}
 					>
-						{#await fetch(portraitUrl) then _}
+						{#await fetch(portraitUrl)}
+							<div class="placeholder">
+								<LoaderIcon class="rounded-sm text-zinc-800" />
+								<span>{app.name}</span>
+							</div>
+						{:then _}
 							<img src={portraitUrl} alt={app.name} />
 						{:catch __}
 							{#await fetch(headerUrl) then _}
