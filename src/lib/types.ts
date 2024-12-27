@@ -18,6 +18,10 @@ export type TDialogState = {
 	showSettingsDialog: boolean;
 };
 
+export type TSearchState = {
+	search: string;
+}
+
 export type TAppsFile = {
 	appid: number;
 	name: string;

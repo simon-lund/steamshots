@@ -2,12 +2,13 @@
 	import '../app.css';
 	import { Toaster } from 'svelte-french-toast';
 
-	import { HelpDialog, Search, SettingsDialog } from '$lib/components';
+	import { HelpDialog, AddDialog, SettingsDialog, SearchInput } from '$lib/components';
 	import logo from '$lib/assets/logo.png';
 	import githubMark from '$lib/assets/github-mark.png';
 
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
+	import { searchState } from '$lib/state';
 
 	let { children } = $props();
 
@@ -22,12 +23,15 @@
 
 <div class="flex min-h-screen flex-col">
 	<header class="sticky top-0 z-10 bg-white">
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-2 order-1">
 			<img src={logo} alt="" class="h-10" />
 			<span class="text-lg font-bold">Steamshots</span>
 		</div>
-		<div class="flex items-center gap-1">
-			<Search />
+		<div class="grow max-w-screen-sm order-3 md:order-2 min-w-full md:min-w-fit">
+			<SearchInput bind:value={searchState.search} placeholder="Search your library..." />
+		</div>
+		<div class="flex items-center gap-1 order-2 md:order-3">
+			<AddDialog />
 			<HelpDialog />
 			<SettingsDialog />
 			<a
@@ -51,6 +55,6 @@
 
 <style>
 	header {
-		@apply flex h-16 items-center justify-between border-b px-4;
+		@apply flex py-2 items-center justify-between border-b px-4 gap-x-8 gap-y-2 flex-wrap;
 	}
 </style>
