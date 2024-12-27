@@ -70,9 +70,22 @@
 	}
 </script>
 
+<!--TODO: found n games-->
+
 <SteamIDAlert />
 
 <main class="mx-auto w-full max-w-screen-2xl grow px-4">
+	{#if apps.length > 0}
+		<div class="pt-4 pb-2 text-muted-foreground text-sm">
+			<span>
+				{#if searchState.search.length >= 2}
+					Found {apps.length} {apps.length === 1 ? 'game' : 'games'} for "{searchState.search}".
+				{:else}
+					You have {apps.length} {apps.length === 1 ? 'game' : 'games'} in your library.
+				{/if}
+			</span>
+		</div>
+	{/if}
 	{#if $appsStore.length === 0}
 		<div class="mt-24 flex items-center justify-center">
 			<div class="flex flex-col items-center gap-4 text-muted-foreground">
