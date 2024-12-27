@@ -1,6 +1,5 @@
 <script>
 	import { Settings2Icon } from 'lucide-svelte';
-	import { dialogState } from '$lib/state';
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
 	import * as Alert from '$lib/components/ui/alert';
