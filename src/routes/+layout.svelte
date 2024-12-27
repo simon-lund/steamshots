@@ -47,10 +47,6 @@
 	</header>
 
 	{@render children()}
-
-	<footer class="flex justify-center px-4 py-2">
-		<span class="text-sm text-muted-foreground">Click app cover to copy path to clipboard.</span>
-	</footer>
 </div>
 
 <style>
