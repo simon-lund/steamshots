@@ -17,8 +17,12 @@ export async function GET({ url }) {
 
 	// Fetch games from Steam API
 	const response = await fetch(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${steamId}&format=json`);
-	const data: { response: { games: { appid: number }[] } } = await response.json();
-	const appIds: number[] = data.response.games.map(app => app.appid);
+	const data: { response: { games: { appid: number, playtime_forever:number }[] } } = await response.json();
+
+	// Sort games by "playtime_forever" and get app IDs
+	const appIds: number[] = data.response.games
+		.sort((a, b) => b.playtime_forever - a.playtime_forever)
+		.map(app => app.appid);
 
 	// Get names of games
 	// TODO: why are not all games found????
