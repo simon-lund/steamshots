@@ -13,6 +13,7 @@
 	} from '$lib/constants';
 	import { toSteamID3 } from '$lib/utils.js';
 	import SteamIDAlert from '$lib/components/SteamIDAlert.svelte';
+	import { importApps } from '$lib/stores/apps-store.js';
 
 	function handleReorder(state: DragDropState<TApp>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -52,11 +53,22 @@
 <main class="mx-auto w-full max-w-screen-2xl grow px-4">
 	{#if $appsStore.length === 0}
 		<div class="mt-24 flex items-center justify-center">
-			<div class="flex flex-col items-center gap-2 text-muted-foreground">
-				<LayoutGridIcon />
+			<div class="flex flex-col items-center gap-4 text-muted-foreground">
+				<LayoutGridIcon class="w-6 h-6" />
 				<p class="w-72 text-center">
 					You don't have any apps yet.<br />
 					Click plus or <kbd>Ctrl</kbd> + <kbd>J</kbd> to add apps.
+				</p>
+				<div class="w-full border-t"></div>
+				<p class="w-72 text-center">
+					Alternatively, you can import your apps from Steam.
+					{#if !$settingsStore.steamId}
+						Please set your Steam ID first.
+					{/if}
+					<button onclick={() => importApps($settingsStore.steamId)} class="!shadow-none text-blue-500 hover:underline">
+						Import Steam apps
+					</button>
+					.
 				</p>
 			</div>
 		</div>
