@@ -2,11 +2,11 @@ import { HTTP_STATUS } from '$lib/constants';
 import { error, json } from '@sveltejs/kit';
 import { STEAM_API_KEY } from '$env/static/private';
 import appsFile from '$lib/assets/apps.json';
-import type { TApp } from '$lib/types';
+import type { TApp, TAppsFile } from '$lib/types';
 
 // Map of app IDs to app names
 // appsFile has type { appid: number, name: string }[]
-const appsMap = appsFile.reduce((acc, app) => {
+const appsMap = (appsFile as TAppsFile).reduce((acc, app) => {
 	acc[app.appid] = { id: app.appid, name: app.name };
 	return acc;
 }, {} as Record<number, TApp>);

@@ -17,3 +17,8 @@ export type TSettings = {
 export type TDialogState = {
 	showSettingsDialog: boolean;
 };
+
+export type TAppsFile = {
+	appid: number;
+	name: string;
+}[];
