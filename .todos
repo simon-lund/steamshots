@@ -1,7 +1,10 @@
 - [ ] Make screenshot folder path configurable
-- [ ] Add Github link
-- [ ] Add feedback tool
-- [ ] Add analytics
 - [ ] Make warning removable
 - [ ] replace french-toast lib with a better one
 - [ ] rework drag&drop -> shouldnt be grid based, but like a list and items should be inserted based on position of mouse relative to item center
+- [ ] fix search performance
+- [ ] add search bar for added games
+- [ ] make onboarding process, where people can enter steamid or url/username and it will fetch their games
+- [ ] test loading of 1000+ games (currently only tested with 100) -> lazy loading?
+- [ ] make it possible to mark games as favorites
+- [ ] make deletion process easiert via select and not drag&drop

@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { ImageOffIcon, LayoutGridIcon, LoaderIcon, Trash2Icon } from 'lucide-svelte';
+	import fuseOptions from '$lib/assets/fuse-options.json';
+	import { ImageOffIcon, LayoutGridIcon, LoaderIcon, SearchXIcon, Trash2Icon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import format from 'string-template';
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
 	import { appsStore, settingsStore } from '$lib/stores';
 	import type { TApp } from '$lib/types';
-	import CopyToast from '$lib/components/copy-toast.svelte';
+	import { CopyToast } from '$lib/components';
+	import Fuse from 'fuse.js';
 	import {
 		APP_HEADER_URL_TEMPLATE,
 		APP_PORTRAIT_URL_TEMPLATE,
@@ -14,6 +16,26 @@
 	import { toSteamID3 } from '$lib/utils.js';
 	import SteamIDAlert from '$lib/components/SteamIDAlert.svelte';
 	import { importApps } from '$lib/stores/apps-store.js';
+	import { searchState } from '$lib/state';
+	import { browser } from '$app/environment';
+
+	let apps = $state<TApp[]>([]);
+	let fuse: Fuse<TApp> | null = null;
+
+	$effect(() => {
+		if (browser) {
+			fuse = new Fuse($appsStore, fuseOptions);
+		}
+	});
+
+	$effect(() => {
+		if (searchState.search.length >= 2) {
+			fuse ??= new Fuse($appsStore, fuseOptions);
+			apps = fuse.search(searchState.search).map((result) => result.item);
+		} else {
+			apps = $appsStore;
+		}
+	});
 
 	function handleReorder(state: DragDropState<TApp>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -73,14 +95,24 @@
 			</div>
 		</div>
 	{:else}
-		<div class="app-grid">
-			<div
-				class="trash-can"
-				use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}
-			>
-				<Trash2Icon class="h-12 w-12" />
+		{#if apps.length === 0}
+			<div class="mt-24 flex items-center justify-center">
+				<div class="inline-flex items-center gap-2 text-muted-foreground">
+					<SearchXIcon class="w-6 h-6" />
+					<span>No results found.</span>
+				</div>
 			</div>
-			{#each $appsStore as app, index (app.id)}
+		{/if}
+		<div class="app-grid">
+			{#if apps.length > 0}
+				<div
+					class="trash-can"
+					use:droppable={{ container: 'trash', callbacks: { onDrop: handleDelete } }}
+				>
+					<Trash2Icon class="h-12 w-12" />
+				</div>
+			{/if}
+			{#each apps as app, index (app.id)}
 				{@const portraitUrl = format(APP_PORTRAIT_URL_TEMPLATE, { appId: app.id })}
 				{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: app.id })}
 				<div use:droppable={{ container: index.toString(), callbacks: { onDrop: handleReorder } }}>
