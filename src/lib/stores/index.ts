@@ -1,2 +1,2 @@
 export { default as appsStore } from './apps-store';
-export { default as appStateStore } from './app-state-store';
+export { default as settingsStore } from './settings-store';

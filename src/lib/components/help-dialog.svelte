@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { appStateStore } from '../stores';
+	import { settingsStore } from '../stores';
 	import { onMount } from 'svelte';
 
 	let open = $state(false);
 
 	onMount(() => {
-		if ($appStateStore.isNewApp) {
+		if ($settingsStore.isNewApp) {
 			open = true;
-			$appStateStore.isNewApp = false;
+			$settingsStore.isNewApp = false;
 		}
 	});
 </script>

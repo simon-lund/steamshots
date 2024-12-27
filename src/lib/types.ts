@@ -9,7 +9,7 @@ export type TSearchResult = {
 	matches: never[];
 };
 
-export type TAppState = {
+export type TSettings = {
 	isNewApp: boolean;
 	steamId?: string;
 };
