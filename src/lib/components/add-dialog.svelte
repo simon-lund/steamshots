@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { CheckCheckIcon, ImageOffIcon, LoaderIcon, PlusIcon } from 'lucide-svelte';
+	import { CheckCheckIcon, ImageOffIcon, LoaderIcon, PlusIcon, SearchXIcon } from 'lucide-svelte';
 	import { appsStore } from '../stores';
 	import format from 'string-template';
 	import * as Command from '$lib/components/ui/command/index.js';
@@ -79,7 +79,12 @@
 				</div>
 			</Command.Loading>
 		{:else if searchResults.length === 0}
-			<Command.Empty>No results found.</Command.Empty>
+			<Command.Empty>
+				<div class="inline-flex items-center gap-1">
+				<SearchXIcon class="h-4 w-4" />
+					<span>No results found.</span>
+				</div>
+			</Command.Empty>
 		{/if}
 		{#each searchResults as result}
 			{@const headerUrl = format(APP_HEADER_URL_TEMPLATE, { appId: result.item.appid })}
