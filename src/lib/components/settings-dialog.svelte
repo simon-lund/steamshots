@@ -5,19 +5,15 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 
-	import { appStateStore } from '../stores';
+	import { appsStore, settingsStore } from '../stores';
 	import { dialogState } from '$lib/state';
-
-	let userId = $state($appStateStore.steamId || '');
-
-	async function save(e) {
-		e.preventDefault();
-		$appStateStore.steamId = userId;
-		close();
-	}
 
 	function close() {
 		dialogState.showSettingsDialog = false;
+	}
+
+	function reset() {
+		$appsStore = [];
 	}
 </script>
 
@@ -28,25 +24,27 @@
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>Settings</Dialog.Title>
-			<Dialog.Description>
-				<p>
-					Please add your Steam ID.
-					<a href="/help/add-steamid" class="text-blue-500 hover:underline" onclick={() => close()}
-						>Don't know your Steam ID?</a
-					>
-				</p>
-			</Dialog.Description>
+			<Dialog.Description>Manage your settings here.</Dialog.Description>
 		</Dialog.Header>
-		<form onsubmit={save}>
-			<div class="grid gap-4 py-4">
-				<div class="grid grid-cols-4 items-center gap-4">
-					<Label for="name" class="text-right">Steam Id</Label>
-					<Input id="name" bind:value={userId} class="col-span-3" required />
-				</div>
+		<div class="space-y-4">
+			<div>
+				<Label for="name">Steam Id</Label>
+				<Input id="name" bind:value={$settingsStore.steamId} class="col-span-3" required placeholder="Your Steam ID" />
+				<a
+					href="/help/add-steamid"
+					class="text-sm text-blue-500 hover:underline"
+					onclick={() => close()}
+				>
+					Don't know your Steam ID?
+				</a>
 			</div>
-			<Dialog.Footer>
-				<Button type="submit">Save changes</Button>
-			</Dialog.Footer>
-		</form>
+			<div class="space-y-2 rounded border border-destructive p-4">
+				<p>
+					<span class="font-medium text-destructive">Warning:</span> This will remove all your apps.
+					This action cannot be undone.
+				</p>
+				<Button on:click={reset} variant="destructive">Remove All Apps</Button>
+			</div>
+		</div>
 	</Dialog.Content>
 </Dialog.Root>
